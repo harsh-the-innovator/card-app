@@ -1,8 +1,10 @@
-package com.example.cardapp;
+package com.example.cardapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.cardapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
