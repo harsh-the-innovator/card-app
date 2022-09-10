@@ -2,7 +2,7 @@
     <string name="app_name">Custom Card</string>
     <string name="title">Build Your Card</string>
     <string name="go_set_permissions">
-<![CDATA[ Go to Settings -> Apps and Notifications -> (Your App Name)\" + \"-> App Permissions and grant access to storage ]]>
+Settings -> Apps -> Custom Card -> App Permissions and grant access to storage
 </string>
     <string name="description_image">card image</string>
     <string name="process_card">Process Card</string>
