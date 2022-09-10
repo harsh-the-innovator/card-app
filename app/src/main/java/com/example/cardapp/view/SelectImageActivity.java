@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -23,7 +22,6 @@ import com.example.cardapp.R;
 import com.example.cardapp.constants.Constants;
 import com.example.cardapp.databinding.ActivitySelectImageBinding;
 
-import java.security.Permission;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class SelectImageActivity extends AppCompatActivity {
     private static final String KEY_PERMISSION_REQUEST_COUNT = "KEY_PERMISSION_REQUEST_COUNT";
     public static final int MAX_NUMBER_REQUEST_PERMISSION = 2;
     private static final int REQUEST_CODE_PERMISSIONS = 1010;
-    ActivitySelectImageBinding binding;
+    private ActivitySelectImageBinding binding;
     private int mPermissionRequest = 0;
     private static final List<String> sPermissions = Arrays.asList(
             Manifest.permission.READ_EXTERNAL_STORAGE,
