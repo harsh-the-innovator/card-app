@@ -7,10 +7,20 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkContinuation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.example.cardapp.constants.Constants;
+import com.example.cardapp.workers.CardWorker;
+import com.example.cardapp.workers.CleanupWorker;
+import com.example.cardapp.workers.SaveCardToFileWorker;
+
 import java.util.List;
 
 public class CustomCardViewModel extends ViewModel {
@@ -57,6 +67,45 @@ public class CustomCardViewModel extends ViewModel {
 
     private void processImageToCard(String quote){
         // heavy works happen
+        WorkContinuation continuation = workManager
+                .beginUniqueWork(Constants.IMAGE_PROCESSING_WORK_NAME,
+                        ExistingWorkPolicy.REPLACE,
+                        OneTimeWorkRequest.from(CleanupWorker.class)
+                        );
 
+        // building our card
+        OneTimeWorkRequest.Builder cardBuilder = new OneTimeWorkRequest.Builder(CardWorker.class);
+        cardBuilder.setInputData(createInputDataForUri(quote));
+
+        continuation = continuation.then(cardBuilder.build());
+
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresCharging(true)
+                .build();
+
+        // work request to save the image to file system
+        OneTimeWorkRequest saveRequest = new OneTimeWorkRequest.Builder(SaveCardToFileWorker.class)
+                .setConstraints(constraints)
+                .addTag(Constants.TAG_OUTPUT)
+                .build();
+
+        continuation = continuation.then(saveRequest);
+
+        // start the work
+        continuation.enqueue();
+    }
+
+    public void cancelWork(){
+        workManager.cancelUniqueWork(Constants.IMAGE_PROCESSING_WORK_NAME);
+    }
+
+    private Data createInputDataForUri(String quote) {
+        Data.Builder builder = new Data.Builder();
+        if(imageUri!=null){
+            builder.putString(Constants.KEY_IMAGE_URI,imageUri.toString());
+            builder.putString(Constants.CUSTOM_QUOTE,quote);
+        }
+
+        return builder.build();
     }
 }
