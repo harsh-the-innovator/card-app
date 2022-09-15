@@ -29,9 +29,6 @@
         <activity
             android:name=".view.CreateCardActivity"
             android:exported="false" />
-        <activity
-            android:name=".view.MainActivity"
-            android:exported="false"/>
     </application>
 
 </manifest>
