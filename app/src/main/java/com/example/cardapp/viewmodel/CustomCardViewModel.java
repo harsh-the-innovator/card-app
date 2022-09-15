@@ -1,10 +1,9 @@
 package com.example.cardapp.viewmodel;
 
-import android.app.Application;
+import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.work.Constraints;
@@ -14,7 +13,6 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkContinuation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.example.cardapp.constants.Constants;
 import com.example.cardapp.workers.CardWorker;
@@ -29,12 +27,8 @@ public class CustomCardViewModel extends ViewModel {
     private LiveData<List<WorkInfo>> savedWorkInfo;
     private Uri outputUri;
 
-    public CustomCardViewModel(){
-
-    }
-
-    public CustomCardViewModel(@NonNull Application application) {
-        workManager = WorkManager.getInstance(application);
+    public CustomCardViewModel(Context applicationContext){
+        workManager = WorkManager.getInstance(applicationContext);
         savedWorkInfo = workManager.getWorkInfosByTagLiveData(Constants.TAG_OUTPUT);
     }
 
@@ -47,6 +41,10 @@ public class CustomCardViewModel extends ViewModel {
 
     public void setOutputUri(String outputUri) {
         this.outputUri = uriOrNull(outputUri);
+    }
+
+    public Uri getOutputUri() {
+        return outputUri;
     }
 
     public Uri getImageUri() {
@@ -65,7 +63,7 @@ public class CustomCardViewModel extends ViewModel {
         return null;
     }
 
-    private void processImageToCard(String quote){
+    public void processImageToCard(String quote){
         // heavy works happen
         WorkContinuation continuation = workManager
                 .beginUniqueWork(Constants.IMAGE_PROCESSING_WORK_NAME,

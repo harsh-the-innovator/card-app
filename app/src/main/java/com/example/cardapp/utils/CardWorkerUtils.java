@@ -19,6 +19,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -65,6 +66,7 @@ public final class CardWorkerUtils {
         }
     }
 
+    @WorkerThread
     public static Bitmap overlayTextOnBitmap(@NonNull Bitmap bitmap,@NonNull Context applicationContext,@NonNull String quote){
 
         // Create the output bitmap

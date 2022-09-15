@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -49,7 +50,6 @@ public class SelectImageActivity extends AppCompatActivity {
         }
 
         // request permissions
-//        requestPermissionIfNecessary();
 
         binding.selectImageButton.setOnClickListener(view -> onSelectImage());
     }
@@ -115,5 +115,34 @@ public class SelectImageActivity extends AppCompatActivity {
         Intent filterIntent = new Intent(this,CreateCardActivity.class);
         filterIntent.putExtra(Constants.KEY_IMAGE_URI,imageUri.toString());
         startActivity(filterIntent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (grantResults.length > 0) {
+                boolean allPermissionsGranted = true;
+
+                for (int grantResult : grantResults) {
+                    Log.i(TAG, "onRequestPermissionsResult: " + grantResult);
+                    allPermissionsGranted = allPermissionsGranted & grantResult == PackageManager.PERMISSION_GRANTED;
+                }
+
+                if (allPermissionsGranted) {
+                    binding.selectImageButton.setEnabled(true);
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    if(mPermissionRequest < MAX_NUMBER_REQUEST_PERMISSION){
+                        mPermissionRequest+=1;
+                        ActivityCompat.requestPermissions(this,sPermissions.toArray(new String[0]),REQUEST_CODE_PERMISSIONS);
+                    }else{
+                        binding.selectImageButton.setEnabled(false);
+                        Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+        }
     }
 }
