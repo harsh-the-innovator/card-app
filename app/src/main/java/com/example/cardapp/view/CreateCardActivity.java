@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.work.Data;
 import androidx.work.WorkInfo;
 
-import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +32,7 @@ public class CreateCardActivity extends AppCompatActivity {
         binding = ActivityCreateCardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        customCardViewModel = new ViewModelProvider.AndroidViewModelFactory((Application) getApplicationContext()).create(CustomCardViewModel.class);
+        customCardViewModel = new ViewModelProvider(this).get(CustomCardViewModel.class);
 
         Intent intent = getIntent();
         String imageUri = intent.getStringExtra(Constants.KEY_IMAGE_URI);

@@ -85,7 +85,7 @@ public class SaveCardToFileWorker extends Worker {
 
     private ContentValues getContentValues() {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
         values.put(MediaStore.Images.Media.DATE_ADDED,DATE_FORMATTER.format(new Date()));
         values.put(MediaStore.Images.Media.DATE_TAKEN,DATE_FORMATTER.format(new Date()));
         return values;
@@ -94,7 +94,7 @@ public class SaveCardToFileWorker extends Worker {
     private void saveImageToStream(Bitmap bitmap, OutputStream outputStream) {
         if (outputStream != null) {
             try {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                 outputStream.close();
             } catch (Exception e) {
                 e.printStackTrace();
