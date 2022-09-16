@@ -1,11 +1,12 @@
 package com.example.cardapp.viewmodel;
 
-import android.content.Context;
+import android.app.Application;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
@@ -21,16 +22,18 @@ import com.example.cardapp.workers.SaveCardToFileWorker;
 
 import java.util.List;
 
-public class CustomCardViewModel extends ViewModel {
+public class CustomCardViewModel extends AndroidViewModel {
     private Uri imageUri;
     private WorkManager workManager;
     private LiveData<List<WorkInfo>> savedWorkInfo;
     private Uri outputUri;
 
-    public CustomCardViewModel(Context applicationContext){
-        workManager = WorkManager.getInstance(applicationContext);
+    public CustomCardViewModel(@NonNull Application application) {
+        super(application);
+        workManager = WorkManager.getInstance(application);
         savedWorkInfo = workManager.getWorkInfosByTagLiveData(Constants.TAG_OUTPUT);
     }
+
 
     public LiveData<List<WorkInfo>> getSavedWorkInfo() {
         if(savedWorkInfo==null){

@@ -126,7 +126,7 @@ public final class CardWorkerUtils {
     }
 
     public static Uri writeBitmapToFile(@NonNull Context applicationContext,@NonNull Bitmap bitmap) {
-        String name = String.format("card-processed-output%s.png", UUID.randomUUID().toString());
+        String name = String.format("card-processed-output%s.jpeg", UUID.randomUUID().toString());
         File outputDir = new File(applicationContext.getFilesDir(), Constants.OUTPUT_PATH);
         if(!outputDir.exists()){
             outputDir.mkdirs();
@@ -134,7 +134,7 @@ public final class CardWorkerUtils {
 
         File outputFile = new File(outputDir,name);
         try(FileOutputStream outputStream = new FileOutputStream(outputFile)){
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 0, outputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
